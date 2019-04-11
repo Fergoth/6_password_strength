@@ -7,19 +7,21 @@ def load_bad_passwords(filepath):
     if not os.path.exists(filepath):
         return None
     with open(filepath, encoding='utf-8') as file:
-        return file.read().split()
+        return file.read().splitlines()
 
 
 def has_good_len(password):
-    if len(password) > 16:
-        return 4
-    elif len(password) > 12:
-        return 3
-    elif len(password) > 8:
-        return 2
-    elif len(password) > 4:
-        return 1
-    return 0
+    best_quality = 4
+    len_quality = [
+        (4,0),
+        (8,1),
+        (12,2),
+        (16,3),
+    ]
+    for length, quality in len_quality:
+        if len(password) < length:
+            return quality
+    return best_quality
 
 
 def has_upper_and_lower(password):
@@ -27,17 +29,12 @@ def has_upper_and_lower(password):
 
 
 def has_dates_or_phone_numbers(password):
-    if re.search(r'\d{4}', password):
-        return 0
-    else:
-        return 1
+    return not bool (re.search(r'\d{4}', password))
+
 
 
 def has_special_symbols(password):
-    if re.search('[\W_]', password):
-        return 1
-    else:
-        return 0
+    return bool(re.search('[\W_]', password))
 
 
 def check_bad_passwords(password):
@@ -54,11 +51,7 @@ def check_bad_passwords(password):
 
 
 def has_digits(password):
-    if re.search('[\d]', password):
-        print('has_digit')
-        return 1
-    else:
-        return 0
+    return bool(re.search('[\d]', password))
 
 
 def get_password_strength(password):
@@ -78,6 +71,6 @@ def get_password_strength(password):
 
 if __name__ == '__main__':
     print('Введите пароль')
-    password = input().split()[0]
+    password = input()
     password_strength = get_password_strength(password)
     print(password_strength)
