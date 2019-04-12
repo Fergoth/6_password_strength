@@ -2,7 +2,7 @@
 
 Script to assess password quality. Returns number between 1 to 10 in accordance with password strength.
 You can give path to file with bad passwords as arg  
- 
+As example, you can use file with bad passwords from [here](https://github.com/danielmiessler/SecLists/tree/master/Passwords)
 # Examples:
 
 ```bash

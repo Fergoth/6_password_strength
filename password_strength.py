@@ -46,10 +46,9 @@ def get_bad_passwords_from_file():
 def check_bad_passwords(password):
     bad_passwords = get_bad_passwords_from_file()
     if bad_passwords:
-        if password in bad_passwords:
-            return 0
-        else:
-            return 1
+        return not (password in bad_passwords)
+    else:
+        return 0
 
 
 def has_digits(password):
@@ -57,7 +56,7 @@ def has_digits(password):
 
 
 def get_password_strength(password):
-    password_str = 1
+    password_strength = 1
     checking_functions = [
         has_special_symbols,
         has_good_len,
@@ -67,8 +66,8 @@ def get_password_strength(password):
         check_bad_passwords,
     ]
     for func in checking_functions:
-        password_str += func(password)
-    return password_str
+        password_strength += func(password)
+    return password_strength
 
 
 if __name__ == '__main__':
