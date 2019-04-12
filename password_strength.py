@@ -1,6 +1,7 @@
 import re
 import sys
 import os
+import getpass
 
 
 def load_bad_passwords(filepath):
@@ -13,10 +14,10 @@ def load_bad_passwords(filepath):
 def has_good_len(password):
     best_quality = 4
     len_quality = [
-        (4,0),
-        (8,1),
-        (12,2),
-        (16,3),
+        (4, 0),
+        (8, 1),
+        (12, 2),
+        (16, 3),
     ]
     for length, quality in len_quality:
         if len(password) < length:
@@ -29,20 +30,21 @@ def has_upper_and_lower(password):
 
 
 def has_dates_or_phone_numbers(password):
-    return not bool (re.search(r'\d{4}', password))
-
+    return not bool(re.search(r'\d{4}', password))
 
 
 def has_special_symbols(password):
     return bool(re.search('[\W_]', password))
 
 
-def check_bad_passwords(password):
+def get_bad_passwords_from_file():
     if len(sys.argv) > 1:
         path = sys.argv[1]
-        bad_passwords = load_bad_passwords(path)
-    else:
-        return 0
+        return load_bad_passwords(path)
+
+
+def check_bad_passwords(password):
+    bad_passwords = get_bad_passwords_from_file()
     if bad_passwords:
         if password in bad_passwords:
             return 0
@@ -71,6 +73,6 @@ def get_password_strength(password):
 
 if __name__ == '__main__':
     print('Введите пароль')
-    password = input()
+    password = getpass.getpass()
     password_strength = get_password_strength(password)
     print(password_strength)
